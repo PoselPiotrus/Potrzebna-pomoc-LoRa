@@ -17,12 +17,32 @@ void setup() {
 }
 
 void loop() {
-  // Sprawdzenie, czy są dostępne dane do odczytu
+ // Sprawdzenie, czy są dostępne dane do odczytu
   if (wioSerial.available()) {
-    // Odczyt i bezpośrednie wyświetlenie odebranych danych
-    String response = wioSerial.readStringUntil('\n');
-    Serial.println("Odebrano: " + response);
+    String hexResponse = wioSerial.readStringUntil('\n');
+    Serial.println("Odebrano (HEX): " + hexResponse);
 
+    // Sprawdzenie, czy odebrane dane zawierają prefiks "+TEST: RX"
+    if (hexResponse.startsWith("+TEST: RX \"")) {
+      // Wyodrębnienie samej treści heksadecymalnej
+      int startIndex = hexResponse.indexOf("\"") + 1;
+      int endIndex = hexResponse.lastIndexOf("\"");
+      String hexData = hexResponse.substring(startIndex, endIndex);
+
+      // Konwersja heksadecymalnej wiadomości na tekst
+      String decodedMessage = "";
+      for (int i = 0; i < hexData.length(); i += 2) {
+        String hexByte = hexData.substring(i, i + 2); // Pobiera dwa znaki heksadecymalne
+        char decodedChar = (char) strtol(hexByte.c_str(), NULL, 16); // Konwersja do ASCII
+        decodedMessage += decodedChar; // Dodaje znak do wiadomości
+      }
+
+      // Wyświetlenie zdekodowanej wiadomości
+      Serial.println("Odebrano (tekst): " + decodedMessage);
+    }
+  }
+  delay(500); // Krótkie opóźnienie przed kolejnym nasłuchem
+}
 
   }
 }
