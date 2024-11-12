@@ -41,8 +41,3 @@ void loop() {
       Serial.println("Odebrano (tekst): " + decodedMessage);
     }
   }
-  delay(500); // Krótkie opóźnienie przed kolejnym nasłuchem
-}
-
-  }
-}
