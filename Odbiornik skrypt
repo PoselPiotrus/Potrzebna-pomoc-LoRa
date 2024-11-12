@@ -22,5 +22,12 @@ void loop() {
     // Odczyt i bezpośrednie wyświetlenie odebranych danych
     String response = wioSerial.readStringUntil('\n');
     Serial.println("Odebrano: " + response);
+
+  // Konwersja wysokości na wartość szesnastkową
+  String hexAltitude = String(altimeter, HEX);
+
+  // Wysyłanie danych przez LoRa
+  String command = "AT+CMSGHEX=" + hexAltitude;
+  wioSerial.println(command);
   }
 }
