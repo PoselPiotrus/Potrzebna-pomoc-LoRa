@@ -20,7 +20,7 @@ void setup() {
   delay(1000);
   wioSerial.println("AT+TEST=RFCFG,868,SF12,125,12,14,14,ON,OFF,OFF");
   delay(1000);
-  wioSerial.println("AT+TEST=TXLRPKT, "00 AA 11 BB 22 CC"");
+  wioSerial.println("AT+TEST=TXLRPKT, 00 AA 11 BB 22 CC");
   delay(1000);
 }
 
@@ -34,3 +34,4 @@ void loop() {
   String command = "AT+TEST=TXLRSTR,\"ALT:" + String(altimeter) + "\"";
   wioSerial.println(command);
   delay(1000); // Wysyłanie danych co 1 sekundę
+}
