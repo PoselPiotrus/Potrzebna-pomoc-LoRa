@@ -1,0 +1,36 @@
+#include <Wire.h>
+#include <Adafruit_Sensor.h>
+#include <Adafruit_BMP280.h>
+#include <SoftwareSerial.h>
+
+SoftwareSerial wioSerial(2, 3); // RX, TX dla Wio-E5
+Adafruit_BMP280 bmp;
+
+void setup() {
+  Serial.begin(9600);         // Serial Monitor
+  wioSerial.begin(9600);      // Komunikacja z Wio-E5
+  Serial.println("Nadajnik LoRa TEST");
+
+  if (!bmp.begin()) {
+    Serial.println("Błąd: Nie można znaleźć czujnika BMP280");
+    while (1); 
+  }
+  
+  wioSerial.println("AT+MODE=TEST");
+  delay(1000);
+  wioSerial.println("AT+TEST=RFCFG,868,SF12,125,12,14,14,ON,OFF,OFF");
+  delay(1000);
+  wioSerial.println("AT+TEST=TXLRPKT, "00 AA 11 BB 22 CC"");
+  delay(1000);
+}
+
+void loop() {
+  int altimeter = bmp.readAltitude(1013.25);
+
+  Serial.print("Wysokość: ");
+  Serial.print(altimeter);
+  Serial.println(" m");
+
+  String command = "AT+TEST=TXLRSTR,\"ALT:" + String(altimeter) + "\"";
+  wioSerial.println(command);
+  delay(1000); // Wysyłanie danych co 1 sekundę
