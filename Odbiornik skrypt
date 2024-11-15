@@ -1,26 +1,25 @@
 #include <SoftwareSerial.h>
 
-SoftwareSerial wioSerial(2, 3); // RX, TX
+SoftwareSerial wioSerial(2, 3); // RX, TX dla Wio-E5
 
 void setup() {
   Serial.begin(9600);          // Serial Monitor
-  wioSerial.begin(9600);       // Komunikacja z Wio E5
+  wioSerial.begin(9600);       // Komunikacja z Wio-E5
   Serial.println("Odbiornik LoRa TEST");
 
-  // Konfiguracja trybu TEST
+  // Ustawienia trybu TEST i parametrów odbioru
   wioSerial.println("AT+MODE=TEST");
-  delay(2000);
+  delay(1000);
   wioSerial.println("AT+TEST=RFCFG,868,SF12,125,12,15,14,ON,OFF,OFF");
-  delay(2000);
-
-  // Rozpoczęcie nasłuchiwania
-  wioSerial.println("AT+TEST=RXLRPKT");
-  delay(2000);
+  delay(1000);
+  wioSerial.println("AT+TEST=RXLRPKT"); // Rozpoczęcie nasłuchiwania
+  delay(1000);
 }
 
 void loop() {
   // Sprawdzenie, czy są dostępne dane do odczytu
   if (wioSerial.available()) {
+    // Odczyt i bezpośrednie wyświetlenie odebranych danych
     String response = wioSerial.readStringUntil('\n');
     Serial.println("Odebrano: " + response);
   }
