@@ -10,7 +10,7 @@ void setup() {
   // Konfiguracja trybu TEST
   wioSerial.println("AT+MODE=TEST");
   delay(2000);
-  wioSerial.println("AT+TEST=RFCFG,868,12,125,14,ON,OFF,OFF");
+  wioSerial.println("AT+TEST=RFCFG,868,SF12,125,12,15,14,ON,OFF,OFF");
   delay(2000);
 
   // Rozpoczęcie nasłuchiwania
